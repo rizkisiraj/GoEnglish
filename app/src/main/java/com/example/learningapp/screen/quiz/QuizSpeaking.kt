@@ -1,6 +1,7 @@
 package com.example.learningapp.screen.quiz
 
 import android.media.MediaPlayer
+import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
@@ -29,6 +30,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -43,6 +45,7 @@ import com.example.learningapp.R
 import com.example.learningapp.components.BlueButton
 import com.example.learningapp.components.BoxCard
 import com.example.learningapp.components.DuolingoButton
+import com.example.learningapp.data.Question
 import com.example.learningapp.ui.theme.GreenBackground
 import com.example.learningapp.ui.theme.RedBackground
 
@@ -50,8 +53,8 @@ import com.example.learningapp.ui.theme.RedBackground
 @Composable
 fun QuizSpeaking(quizViewModel: QuizViewModel, navController: NavController) {
     var voiceToTextParser = quizViewModel.application
-    val questionObj = quizViewModel.getQuestion()
-    val composition by rememberLottieComposition(spec = LottieCompositionSpec.RawRes(questionObj.lottieAnimation!!))
+    val questionObj: Question? = quizViewModel.getQuestion()
+    val composition by rememberLottieComposition(spec = LottieCompositionSpec.RawRes(R.raw.cat))
 
     val sheetState = rememberModalBottomSheetState()
     var showBottomSheet by remember { mutableStateOf(false) }
@@ -84,7 +87,7 @@ fun QuizSpeaking(quizViewModel: QuizViewModel, navController: NavController) {
         if(state.spokenText.isNotBlank()) {
             showBottomSheet = true
         }
-        if(state.spokenText.lowercase() == questionObj.answer.lowercase()) {
+        if(state.spokenText.lowercase() == questionObj?.answer?.lowercase()) {
             nMediaPlayer.start()
         }
     }
@@ -114,9 +117,7 @@ fun QuizSpeaking(quizViewModel: QuizViewModel, navController: NavController) {
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 LottieAnimation(composition = composition, iterations = LottieConstants.IterateForever, modifier = Modifier.size(150.dp))
-                BoxCard(modifier = Modifier.fillMaxWidth(), text = questionObj.answer, type = "") {
-
-                }
+                BoxCard(modifier = Modifier.fillMaxWidth(), text = questionObj!!.answer)
             }
             Divider()
             Spacer(modifier = Modifier.height(32.dp))
@@ -134,7 +135,7 @@ fun QuizSpeaking(quizViewModel: QuizViewModel, navController: NavController) {
                     showBottomSheet = false
                 },
                 sheetState = sheetState,
-                containerColor = if(state.spokenText.lowercase() == questionObj.answer.lowercase()) GreenBackground else RedBackground
+                containerColor = if(state.spokenText.lowercase() == questionObj!!.answer.lowercase()) GreenBackground else RedBackground
             ) {
                 Column(
                     modifier = Modifier
@@ -143,14 +144,32 @@ fun QuizSpeaking(quizViewModel: QuizViewModel, navController: NavController) {
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     if(state.spokenText.lowercase() == questionObj.answer.lowercase()) {
-                        Text("Selamat, jawabanmu benar!", fontSize = MaterialTheme.typography.titleLarge.fontSize, fontWeight = FontWeight.SemiBold, textAlign = TextAlign.Center)
+                        Text("Selamat, jawabanmu benar!", fontSize = MaterialTheme.typography.titleLarge.fontSize, fontWeight = FontWeight.SemiBold, textAlign = TextAlign.Center, color = Color.Black)
                         Spacer(modifier = Modifier.height(16.dp))
                         DuolingoButton(modifier = Modifier.fillMaxWidth(0.8f), text = "Lanjut", type = "periksa") {
+                            quizViewModel.updateScore()
+                            quizViewModel.OnAnswerClick()
+                            var indexSekarang = quizViewModel.getIndex()
                             showBottomSheet = false
-                            navController.navigate("Finished")
+
+                            if(indexSekarang < 0) {
+                                nMediaPlayer.release()
+                                navController.navigate("Finished")
+                                return@DuolingoButton
+                            } else {
+                                voiceToTextParser.resetState()
+                                var type = quizViewModel.getQuestion()?.type
+                                navController.navigate(type!!) {
+                                    popUpTo("Finished") {
+                                        inclusive = true
+                                    }
+                                }
+                            }
+
+
                         }
                     } else {
-                        Text("Sayang sekali, kamu belum berhasil :(", fontSize = MaterialTheme.typography.titleLarge.fontSize, fontWeight = FontWeight.SemiBold, textAlign = TextAlign.Center)
+                        Text("Sayang sekali, kamu belum berhasil :(", fontSize = MaterialTheme.typography.titleLarge.fontSize, fontWeight = FontWeight.SemiBold, textAlign = TextAlign.Center, color = Color.Black)
                         Spacer(modifier = Modifier.height(16.dp))
                         DuolingoButton(modifier = Modifier.fillMaxWidth(0.8f), text = "Coba Lagi", type = "gagal") {
                             showBottomSheet = false

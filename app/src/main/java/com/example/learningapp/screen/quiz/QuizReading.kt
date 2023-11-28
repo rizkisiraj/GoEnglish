@@ -27,6 +27,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -35,19 +36,19 @@ import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.rememberLottieComposition
+import com.example.learningapp.BottomNavScreen
 import com.example.learningapp.QuizViewModel
 import com.example.learningapp.components.BoxCard
 import com.example.learningapp.components.DuolingoButton
 import com.example.learningapp.R
 import com.example.learningapp.data.Question
-import com.example.learningapp.data.QuestionType
 import com.example.learningapp.ui.theme.GreenBackground
 import com.example.learningapp.ui.theme.RedBackground
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun QuizReading(quizViewModel: QuizViewModel, navController: NavController) {
-    val questionObj: Question = quizViewModel.getQuestion()
+    val questionObj: Question? = quizViewModel.getQuestion()
     val composition by rememberLottieComposition(spec = LottieCompositionSpec.RawRes(R.raw.lottie))
     var answerRightNow by remember { mutableStateOf("") }
 
@@ -83,9 +84,7 @@ fun QuizReading(quizViewModel: QuizViewModel, navController: NavController) {
                     iterations = LottieConstants.IterateForever,
                     modifier = Modifier.size(150.dp)
                 )
-                BoxCard(modifier = Modifier.fillMaxWidth(), text = questionObj.question, type = "") {
-
-                }
+                BoxCard(modifier = Modifier.fillMaxWidth(), text = questionObj!!.question)
             }
             Divider()
             Spacer(modifier = Modifier.height(24.dp))
@@ -95,7 +94,7 @@ fun QuizReading(quizViewModel: QuizViewModel, navController: NavController) {
                 contentPadding = PaddingValues(vertical = 8.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                items(questionObj.choices) { choice ->
+                items(questionObj!!.choices) { choice ->
                     DuolingoButton(
                         modifier = Modifier.fillMaxWidth(0.9f),
                         text = choice,
@@ -121,7 +120,7 @@ fun QuizReading(quizViewModel: QuizViewModel, navController: NavController) {
                     showBottomSheet = false
                 },
                 sheetState = sheetState,
-                containerColor = if(questionObj.answer.lowercase() == answerRightNow.lowercase()) GreenBackground else RedBackground
+                containerColor = if(questionObj!!.answer.lowercase() == answerRightNow.lowercase()) GreenBackground else RedBackground
             ) {
                 Column(
                     modifier = Modifier
@@ -134,7 +133,8 @@ fun QuizReading(quizViewModel: QuizViewModel, navController: NavController) {
                             "Selamat, jawabanmu benar!",
                             fontSize = MaterialTheme.typography.titleLarge.fontSize,
                             fontWeight = FontWeight.SemiBold,
-                            textAlign = TextAlign.Center
+                            textAlign = TextAlign.Center,
+                            color = Color.Black
                         )
                         Spacer(modifier = Modifier.height(16.dp))
                         DuolingoButton(
@@ -142,15 +142,21 @@ fun QuizReading(quizViewModel: QuizViewModel, navController: NavController) {
                             text = "Lanjut",
                             type = "periksa"
                         ) {
+                            quizViewModel.updateScore()
                             quizViewModel.OnAnswerClick()
+                            var indexSekarang = quizViewModel.getIndex()
                             showBottomSheet = false
-                            if(quizViewModel.getIndex() < 0) {
+
+                            if(indexSekarang < 0) {
                                 navController.navigate("Finished")
-                            }
-                            if(quizViewModel.getQuestion().type == QuestionType.SPEAKING) {
-                                navController.navigate("Speaking")
+                                return@DuolingoButton
                             } else {
-                                navController.navigate("Listening")
+                                var type = quizViewModel.getQuestion()?.type
+                                navController.navigate(type!!) {
+                                    popUpTo("Finished") {
+                                        inclusive = true
+                                    }
+                                }
                             }
                         }
                     } else {
@@ -158,7 +164,8 @@ fun QuizReading(quizViewModel: QuizViewModel, navController: NavController) {
                             "Sayang sekali, kamu belum berhasil :(",
                             fontSize = MaterialTheme.typography.titleLarge.fontSize,
                             fontWeight = FontWeight.SemiBold,
-                            textAlign = TextAlign.Center
+                            textAlign = TextAlign.Center,
+                            color = Color.Black
                         )
                         Spacer(modifier = Modifier.height(16.dp))
                         DuolingoButton(

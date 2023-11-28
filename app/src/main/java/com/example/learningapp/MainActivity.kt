@@ -7,6 +7,8 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import com.example.learningapp.components.Coba
+import com.example.learningapp.screen.ProfileScreen
 import com.example.learningapp.screen.SuccessScreen
 import com.example.learningapp.screen.quiz.QuizSpeaking
 import com.example.learningapp.ui.theme.LearningAppTheme

@@ -1,5 +1,6 @@
 package com.example.learningapp.screen
 
+import android.util.Log
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -25,36 +26,45 @@ import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.example.learningapp.QuizViewModel
 import com.example.learningapp.R
+import com.example.learningapp.utils.FirebaseRepositories
 import kotlinx.coroutines.delay
 
 @Composable
 fun LoadingScreen(quizViewModel: QuizViewModel, navController: NavController) {
-    val composition by rememberLottieComposition(spec = LottieCompositionSpec.RawRes(R.raw.loading))
+    val repository = FirebaseRepositories()
+    val composition by rememberLottieComposition(spec = LottieCompositionSpec.RawRes(R.raw.loading_animation))
 
-    LaunchedEffect(true) {
-        // Introduce a delay of 3 seconds
-        delay(3000)
+    LaunchedEffect(key1 = Unit) {
+        // this is a suspend function
+        var listQuestion = repository.getQuestions("aVzdekthMXdyKDsWW3Vp")
+        quizViewModel.updateQuestionList(listQuestion)
 
-        // After the delay, update the result
-        navController.navigate("Reading")
+        Log.d("Question", quizViewModel.getQuestion()!!.type)
+
+        if(quizViewModel.getQuestion()?.type == "Reading") {
+            navController.navigate("Reading")
+        } else if(quizViewModel.getQuestion()?.type == "Listening") {
+            navController.navigate("Listening")
+        } else {
+            navController.navigate("Speaking")
+        }
     }
+
+//    LaunchedEffect(true) {
+//        // Introduce a delay of 3 seconds
+//        delay(3000)
+//        navController.navigate("Reading")
+//    }
 
     Box(
         modifier = Modifier
             .fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
-        Column(
-            modifier = Modifier,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            LottieAnimation(
-                composition = composition,
-                iterations = LottieConstants.IterateForever,
-                modifier = Modifier.size(300.dp)
-            )
-            Spacer(modifier = Modifier.height(64.dp))
-            Text("Loading...", fontSize = MaterialTheme.typography.headlineMedium.fontSize, fontWeight = FontWeight.SemiBold, textAlign = TextAlign.Center)
-        }
+        LottieAnimation(
+            composition = composition,
+            iterations = LottieConstants.IterateForever,
+            modifier = Modifier.size(300.dp)
+        )
     }
 }

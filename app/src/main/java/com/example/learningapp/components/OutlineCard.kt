@@ -7,12 +7,10 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.indication
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -22,13 +20,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
@@ -36,30 +33,12 @@ import androidx.constraintlayout.compose.Dimension
 
 private val shadowSize = 4.dp
 
-@Preview
 @Composable
-fun CobaSatu() {
-    Box(
-        Modifier.fillMaxSize()
-    ) {
-        BoxCard(
-            modifier = Modifier.wrapContentWidth(),
-            text = "Jahwa",
-            type = "jawaban"
-        ) {
-        }
-    }
-}
-
-@Composable
-fun BoxCard(
+fun OutlineBox(
     modifier: Modifier,
-    text: String,
-    type: String,
     color: Color = MaterialTheme.colorScheme.background,
-    textColor: Color = MaterialTheme.colorScheme.onBackground,
     shadowColor: Color = MaterialTheme.colorScheme.outline,
-    onClick: () -> Unit,
+    content: @Composable() (Modifier.() -> Unit),
 ) {
     ConstraintLayout(
         modifier = modifier
@@ -96,7 +75,7 @@ fun BoxCard(
         Box(
             modifier = Modifier
                 .constrainAs(btn) {
-                    width = Dimension.wrapContent
+                    width = Dimension.matchParent
                     top.linkTo(parent.top)
 
                     translationY = myAnim
@@ -115,9 +94,10 @@ fun BoxCard(
                 }
                 .clip(RoundedCornerShape(12.dp))
                 .background(color)
-                .padding(14.dp)
+                .padding(14.dp),
+            contentAlignment = Alignment.Center
         ) {
-            Text(text = text, fontSize = MaterialTheme.typography.bodyLarge.fontSize, textAlign = TextAlign.Center)
+            content(Modifier)
         }
     }
 }

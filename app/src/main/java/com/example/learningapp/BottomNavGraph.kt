@@ -77,17 +77,113 @@ fun NavGraphBuilder.quizScreen(navController: NavHostController, quizViewModel: 
         route = "quiz__graph",
         startDestination = "Reading"
     ) {
-        composable(route = "Listening") {
+        composable(route = "Listening",
+            enterTransition = {
+                slideIntoContainer(
+                    AnimatedContentTransitionScope.SlideDirection.Left,
+                    animationSpec = tween(700)
+                )
+            },
+            exitTransition = {
+                slideOutOfContainer(
+                    AnimatedContentTransitionScope.SlideDirection.Left,
+                    animationSpec = tween(700)
+                )
+            },
+            popExitTransition = {
+                slideOutOfContainer(
+                    AnimatedContentTransitionScope.SlideDirection.Right,
+                    animationSpec = tween(700)
+                )
+            },
+            popEnterTransition = {
+                fadeIn(
+                    tween(700)
+                )
+            }
+            ) {
             QuizListening(quizViewModel = quizViewModel, navController = navController)
         }
-        composable(route = "Reading") {
+        composable(route = "Reading",
+            enterTransition = {
+                slideIntoContainer(
+                    AnimatedContentTransitionScope.SlideDirection.Left,
+                    animationSpec = tween(700)
+                )
+            },
+            exitTransition = {
+                slideOutOfContainer(
+                    AnimatedContentTransitionScope.SlideDirection.Left,
+                    animationSpec = tween(700)
+                )
+            },
+            popExitTransition = {
+                slideOutOfContainer(
+                    AnimatedContentTransitionScope.SlideDirection.Right,
+                    animationSpec = tween(700)
+                )
+            },
+            popEnterTransition = {
+                fadeIn(
+                    tween(700)
+                )
+            }
+            ) {
             QuizReading(quizViewModel = quizViewModel, navController = navController)
         }
-        composable(route = "Speaking") {
+        composable(route = "Speaking",
+            enterTransition = {
+                slideIntoContainer(
+                    AnimatedContentTransitionScope.SlideDirection.Left,
+                    animationSpec = tween(700)
+                )
+            },
+            exitTransition = {
+                slideOutOfContainer(
+                    AnimatedContentTransitionScope.SlideDirection.Left,
+                    animationSpec = tween(700)
+                )
+            },
+            popExitTransition = {
+                slideOutOfContainer(
+                    AnimatedContentTransitionScope.SlideDirection.Right,
+                    animationSpec = tween(700)
+                )
+            },
+            popEnterTransition = {
+                fadeIn(
+                    tween(700)
+                )
+            }
+            ) {
             QuizSpeaking(quizViewModel = quizViewModel, navController = navController)
         }
-        composable(route = "Finished") {
-            SuccessScreen(navController = navController)
+        composable(route = "Finished",
+            enterTransition = {
+                slideIntoContainer(
+                    AnimatedContentTransitionScope.SlideDirection.Left,
+                    animationSpec = tween(700)
+                )
+            },
+            exitTransition = {
+                slideOutOfContainer(
+                    AnimatedContentTransitionScope.SlideDirection.Left,
+                    animationSpec = tween(700)
+                )
+            },
+            popExitTransition = {
+                slideOutOfContainer(
+                    AnimatedContentTransitionScope.SlideDirection.Right,
+                    animationSpec = tween(700)
+                )
+            },
+            popEnterTransition = {
+                fadeIn(
+                    tween(700)
+                )
+            }
+            ) {
+            SuccessScreen(navController = navController, quizViewModel)
         }
         composable(route = "Loading") {
             LoadingScreen(quizViewModel = quizViewModel, navController)

@@ -1,6 +1,7 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -52,11 +53,11 @@ android {
 dependencies {
     val nav_version = "2.7.5"
 
+    implementation(platform("com.google.firebase:firebase-bom:32.6.0"))
+    implementation("com.google.firebase:firebase-firestore-ktx")
     implementation("androidx.compose.material:material-icons-extended")
     implementation("com.airbnb.android:lottie-compose:6.1.0")
     implementation("androidx.constraintlayout:constraintlayout-compose:1.0.1")
-//    implementation("com.google.mlkit:recognize:17.0.0")
-//    implementation("com.google.mlkit:speech-recognition:16.0.0")
     implementation("com.google.accompanist:accompanist-systemuicontroller:0.27.0")
     implementation("androidx.navigation:navigation-compose:$nav_version")
     implementation("androidx.core:core-ktx:1.9.0")

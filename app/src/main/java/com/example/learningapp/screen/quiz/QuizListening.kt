@@ -1,5 +1,6 @@
 package com.example.learningapp.screen.quiz
 
+import android.content.res.AssetManager
 import android.media.MediaPlayer
 import android.util.Log
 import androidx.compose.foundation.background
@@ -13,6 +14,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.VolumeDown
 import androidx.compose.material.icons.filled.VolumeUp
@@ -31,32 +34,39 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.learningapp.QuizViewModel
 import com.example.learningapp.components.DuolingoButton
 import com.example.learningapp.components.VolumeButton
-import com.example.learningapp.data.QuestionType
 import com.example.learningapp.ui.theme.BlueShadow
 import com.example.learningapp.ui.theme.GreenBackground
 import com.example.learningapp.ui.theme.RedBackground
+import java.io.FileInputStream
+import java.io.InputStream
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun QuizListening(quizViewModel: QuizViewModel, navController: NavController) {
     val questionObj = quizViewModel.getQuestion()
+    val soundPath: String? = if(questionObj?.sound != null) questionObj.sound else ""
+
     var answerRightNow by remember { mutableStateOf("") }
     val mContext = LocalContext.current
     val sheetState = rememberModalBottomSheetState()
     var showBottomSheet by remember { mutableStateOf(false) }
-    var nMediaPlayer: MediaPlayer = MediaPlayer()
+    var nMediaPlayer = MediaPlayer()
 
-    if(questionObj.sound != null) {
-        nMediaPlayer = MediaPlayer.create(mContext, questionObj.sound!!)
+    var resId = LocalContext.current.resources.getIdentifier(soundPath,"raw","com.example.learningapp")
+
+    if(questionObj?.sound != null) {
+        nMediaPlayer = MediaPlayer.create(mContext, resId)
     }
 
     Box(
@@ -98,6 +108,11 @@ fun QuizListening(quizViewModel: QuizViewModel, navController: NavController) {
                 modifier = Modifier.fillMaxWidth(0.8f),
                 value = answerRightNow,
                 onValueChange = { answerRightNow = it },
+                singleLine = true,
+                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+                keyboardActions = KeyboardActions(
+                    onDone = { showBottomSheet = true }
+                ),
                 label = { Text("Your Answer") },
                 colors = TextFieldDefaults.outlinedTextFieldColors(
                     containerColor = MaterialTheme.colorScheme.surfaceVariant,
@@ -117,7 +132,7 @@ fun QuizListening(quizViewModel: QuizViewModel, navController: NavController) {
                     showBottomSheet = false
                 },
                 sheetState = sheetState,
-                containerColor = if(questionObj.answer.lowercase() == answerRightNow.lowercase()) GreenBackground else RedBackground
+                containerColor = if(questionObj?.answer?.lowercase() == answerRightNow.lowercase()) GreenBackground else RedBackground
             ) {
                 Column(
                     modifier = Modifier
@@ -125,12 +140,13 @@ fun QuizListening(quizViewModel: QuizViewModel, navController: NavController) {
                         .padding(16.dp),
                     horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
-                    if (questionObj.answer.lowercase() == answerRightNow.lowercase()) {
+                    if (questionObj?.answer?.lowercase() == answerRightNow.lowercase()) {
                         Text(
                             "Selamat, jawabanmu benar!",
                             fontSize = MaterialTheme.typography.titleLarge.fontSize,
                             fontWeight = FontWeight.SemiBold,
-                            textAlign = TextAlign.Center
+                            textAlign = TextAlign.Center,
+                            color = Color.Black
                         )
                         Spacer(modifier = Modifier.height(16.dp))
                         DuolingoButton(
@@ -138,16 +154,21 @@ fun QuizListening(quizViewModel: QuizViewModel, navController: NavController) {
                             text = "Lanjut",
                             type = "periksa"
                         ) {
+                            quizViewModel.updateScore()
                             quizViewModel.OnAnswerClick()
-                            Log.d("Spawn", quizViewModel.getIndex().toString())
+                            var indexSekarang = quizViewModel.getIndex()
                             showBottomSheet = false
-                            if(quizViewModel.getIndex() < 0) {
+
+                            if(indexSekarang < 0) {
                                 navController.navigate("Finished")
-                            }
-                            if(quizViewModel.getQuestion().type == QuestionType.SPEAKING) {
-                                navController.navigate("Speaking")
+                                return@DuolingoButton
                             } else {
-                                navController.navigate("Reading")
+                                var type = quizViewModel.getQuestion()?.type
+                                navController.navigate(type!!) {
+                                    popUpTo("Finished") {
+                                        inclusive = true
+                                    }
+                                }
                             }
                         }
                     } else {
@@ -155,7 +176,8 @@ fun QuizListening(quizViewModel: QuizViewModel, navController: NavController) {
                             "Sayang sekali, kamu belum berhasil :(",
                             fontSize = MaterialTheme.typography.titleLarge.fontSize,
                             fontWeight = FontWeight.SemiBold,
-                            textAlign = TextAlign.Center
+                            textAlign = TextAlign.Center,
+                            color = Color.Black
                         )
                         Spacer(modifier = Modifier.height(16.dp))
                         DuolingoButton(

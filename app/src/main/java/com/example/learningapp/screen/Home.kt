@@ -20,6 +20,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -50,8 +51,8 @@ fun HomeScreen(navController: NavHostController, uiViewModel: SharedViewModel) {
             Column {
                 Text(
                     modifier = Modifier.padding(start = 8.dp),
-                    text = "Select story",
-                    fontSize = MaterialTheme.typography.headlineLarge.fontSize,
+                    text = "Select Topic",
+                    fontSize = MaterialTheme.typography.headlineMedium.fontSize,
                     fontWeight = FontWeight.SemiBold
                 )
                 StoryView(navController = navController, uiViewModel = uiViewModel)
@@ -86,16 +87,13 @@ fun StoryView(navController: NavHostController, uiViewModel: SharedViewModel) {
                     Text(
                         item.emoji,
                         textAlign = TextAlign.Center,
-                        fontSize = 48.sp,
+                        fontSize = 64.sp,
                     )
                     Text(
                         modifier = Modifier.padding(top = 8.dp),
                         text = item.title,
-                        fontWeight = FontWeight.SemiBold
-                    )
-                    Text(
-                        modifier = Modifier.padding(top = 4.dp),
-                        text = item.category.joinToString(","),
+                        fontWeight = FontWeight.SemiBold,
+                        color = Color.Black
                     )
                 }
             }

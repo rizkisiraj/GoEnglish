@@ -2,6 +2,7 @@ package com.example.learningapp.screen
 
 import android.icu.text.ListFormatter.Width
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Arrangement
@@ -42,6 +43,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.learningapp.SharedViewModel
+import com.example.learningapp.components.DuolingoButton
 import com.example.learningapp.data.DetailsNavScreen
 import com.example.learningapp.data.dummy
 import com.example.learningapp.ui.theme.md_theme_light_background
@@ -56,10 +58,10 @@ fun DetailConvoScreen(uiViewModel: SharedViewModel, navController: NavHostContro
         modifier = Modifier
             .fillMaxSize()
             .background(convo.color)
-            .verticalScroll(rememberScrollState())
-            .height(IntrinsicSize.Max)
     ) {
         Column(
+            modifier = Modifier
+                .fillMaxSize()
 //                .scrollable(rememberScrollState(), Orientation.Vertical)
         ) {
             TopAppBar(
@@ -73,10 +75,11 @@ fun DetailConvoScreen(uiViewModel: SharedViewModel, navController: NavHostContro
                 },
                 colors = TopAppBarDefaults.smallTopAppBarColors(containerColor = convo.color)
             )
-            Box(
+            Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(200.dp)
+                    .height(200.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
                     text = convo.emoji,
@@ -84,7 +87,14 @@ fun DetailConvoScreen(uiViewModel: SharedViewModel, navController: NavHostContro
                     textAlign = TextAlign.Center,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .align(Alignment.Center)
+                )
+                Text(
+                    text = convo.title,
+                    fontSize = MaterialTheme.typography.headlineSmall.fontSize,
+                    textAlign = TextAlign.Center,
+                    fontWeight = FontWeight.SemiBold,
+                    modifier = Modifier
+                        .fillMaxWidth()
                 )
             }
             Column(
@@ -93,72 +103,59 @@ fun DetailConvoScreen(uiViewModel: SharedViewModel, navController: NavHostContro
                     .clip(shape = RoundedCornerShape(topStart = 32.dp, topEnd = 32.dp))
                     .background(MaterialTheme.colorScheme.background)
                     .padding(horizontal = 16.dp, vertical = 16.dp)
+                    .verticalScroll(rememberScrollState())
+                    .height(IntrinsicSize.Max)
             ) {
                 Text(
-                    convo.title,
-                    fontSize = MaterialTheme.typography.headlineMedium.fontSize,
+                    "Select Chapter",
+                    fontSize = MaterialTheme.typography.titleLarge.fontSize,
                     fontWeight = FontWeight.SemiBold,
-                    modifier = Modifier.padding(bottom = 4.dp)
-                )
-                Text(
-                    "Voice Actor : ${convo.author}",
-                    fontSize = MaterialTheme.typography.bodyLarge.fontSize,
-                    modifier = Modifier.padding(bottom = 8.dp)
+                    modifier = Modifier.padding(bottom = 16.dp)
                 )
                 Divider()
-                Row(
+                Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(vertical = 8.dp),
-                    horizontalArrangement = Arrangement.SpaceBetween
+                        .padding(vertical = 16.dp, horizontal = 8.dp)
+                        .clickable {
+                            navController.navigate("Loading")
+                        }
                 ) {
-                    Column {
-                        Text(
-                            "Difficulty",
-                            fontSize = MaterialTheme.typography.bodyLarge.fontSize,
-                            modifier = Modifier.padding(bottom = 4.dp)
-                        )
-                        Text(
-                            "Medium",
-                            fontSize = MaterialTheme.typography.bodyLarge.fontSize,
-                            fontWeight = FontWeight.SemiBold
-                        )
-                    }
-                    Column {
-                        Text(
-                            "Genre",
-                            fontSize = MaterialTheme.typography.bodyLarge.fontSize,
-                            modifier = Modifier.padding(bottom = 4.dp)
-                        )
-                        Text(
-                            convo.category.joinToString(","),
-                            fontSize = MaterialTheme.typography.bodyLarge.fontSize,
-                            fontWeight = FontWeight.SemiBold
-                        )
-                    }
+                    Text(
+                        "Chapter #1",
+                        fontSize = MaterialTheme.typography.bodyLarge.fontSize
+                    )
                 }
                 Divider()
-                Text(
-                    "Description",
-                    fontSize = MaterialTheme.typography.headlineSmall.fontSize,
-                    fontWeight = FontWeight.SemiBold,
-                    modifier = Modifier.padding(top = 8.dp, bottom = 4.dp)
-                )
-                Text(
-                    convo.description,
-                    fontSize = MaterialTheme.typography.bodyLarge.fontSize,
-                    textAlign = TextAlign.Justify
-                )
-                Spacer(modifier = Modifier.weight(1f))
-                Button(
+                Box(
                     modifier = Modifier
-                        .padding(top = 8.dp)
-                        .fillMaxWidth(),
-                    onClick = {
-                        navController.navigate("Loading")
-                    }) {
-                    Text("Play")
+                        .fillMaxWidth()
+                        .padding(vertical = 16.dp, horizontal = 8.dp)
+                        .clickable {
+                            navController.navigate("Loading")
+                        }
+                ) {
+                    Text(
+                        "Chapter #2",
+                        fontSize = MaterialTheme.typography.bodyLarge.fontSize
+                    )
                 }
+                Divider()
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 16.dp, horizontal = 8.dp)
+                        .clickable {
+                            navController.navigate("Loading")
+                        }
+                ) {
+                    Text(
+                        "Chapter #3",
+                        fontSize = MaterialTheme.typography.bodyLarge.fontSize
+                    )
+                }
+                Divider()
+                Spacer(modifier = Modifier.weight(1f))
             }
         }
     }

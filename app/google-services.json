@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "994681237466",
+    "project_id": "goenglish-38221",
+    "storage_bucket": "goenglish-38221.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:994681237466:android:46c870912d3cdb1f7c9ae3",
+        "android_client_info": {
+          "package_name": "com.example.learningapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDR2IHHGsUHPPfMx2Y4-Q37SyAshiuK7m0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:994681237466:android:d231eeb189c970077c9ae3",
+        "android_client_info": {
+          "package_name": "com.example.learningapp.screen.quiz"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDR2IHHGsUHPPfMx2Y4-Q37SyAshiuK7m0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

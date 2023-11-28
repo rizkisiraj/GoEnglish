@@ -74,7 +74,7 @@ fun BottomBar(navController: NavHostController) {
     val bottomBarDestination = screens.any { it.route == currentDestination?.route }
     if(bottomBarDestination) {
         NavigationBar(
-            containerColor = Color.White
+            containerColor = MaterialTheme.colorScheme.background
         ) {
             screens.forEach { screen ->
                 AddItem(
