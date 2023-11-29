@@ -2,9 +2,11 @@ package com.example.learningapp
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.outlined.Home
+import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material.icons.outlined.Star
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -25,8 +27,8 @@ sealed class BottomNavScreen(
     object Analytic: BottomNavScreen(
         route = "analytic",
         title = "Analytic",
-        selectedIcon = Icons.Filled.Star,
-        unselectedIcon = Icons.Outlined.Star
+        selectedIcon = Icons.Filled.Person,
+        unselectedIcon = Icons.Outlined.Person
     )
 
     object Setting: BottomNavScreen(
