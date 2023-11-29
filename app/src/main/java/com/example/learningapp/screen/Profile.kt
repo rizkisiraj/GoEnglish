@@ -40,7 +40,7 @@ fun ProfileScreen() {
 @Composable
 fun Analisa(){
     val text1 = listOf("7+", "A+", "8")
-    val text2 = listOf("Days Streak", "Grade", "Completed")
+    val text2 = listOf("Day Streak", "Grade", "Completed")
     val colors = listOf<CardColor>(
         CardColor(Color(0xFFE2F2FF), Color(0xFF53ADF0)),
         CardColor(Color(0xFFE2FFE3), Color(0xFF7CF053)),

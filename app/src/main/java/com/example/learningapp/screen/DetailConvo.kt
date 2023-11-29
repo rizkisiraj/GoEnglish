@@ -5,6 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.scrollable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -70,7 +71,7 @@ fun DetailConvoScreen(uiViewModel: SharedViewModel, navController: NavHostContro
                     IconButton(onClick = {
                         navController.popBackStack()
                     }) {
-                        Icon(Icons.Filled.ArrowBack, null)
+                        Icon(Icons.Filled.ArrowBack, null, tint = Color.Black)
                     }
                 },
                 colors = TopAppBarDefaults.smallTopAppBarColors(containerColor = convo.color)
@@ -93,6 +94,7 @@ fun DetailConvoScreen(uiViewModel: SharedViewModel, navController: NavHostContro
                     fontSize = MaterialTheme.typography.headlineSmall.fontSize,
                     textAlign = TextAlign.Center,
                     fontWeight = FontWeight.SemiBold,
+                    color = Color.Black,
                     modifier = Modifier
                         .fillMaxWidth()
                 )
