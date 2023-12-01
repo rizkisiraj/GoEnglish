@@ -83,7 +83,7 @@ fun DetailConvoScreen(uiViewModel: SharedViewModel, navController: NavHostContro
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
-                    text = convo.emoji,
+                    text = convo.title,
                     fontSize = 64.sp,
                     textAlign = TextAlign.Center,
                     modifier = Modifier

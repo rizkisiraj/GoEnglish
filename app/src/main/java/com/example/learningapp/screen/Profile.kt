@@ -53,7 +53,6 @@ fun Analisa(){
             .padding(25.dp)
             .fillMaxSize()
             .padding(top = 65.dp)
-
     ) {
 
         //Ikon Kucink

@@ -1,29 +1,30 @@
 package com.example.learningapp.data
 
 import androidx.compose.ui.graphics.Color
+import com.example.learningapp.R
 
 
 data class Conversation(
     var color: Color,
     var title: String,
-    var emoji: String,
+    var description: String,
+    var cover: Int,
 )
 
 var dummy = listOf(Conversation(
     color = Color(190, 173, 250),
-    title = "Job",
-    emoji = "☕",
+    description = "Mempelajari kosa kata tentang keluarga dan aktivitas sehari-hari.",
+    title = "Keluarga",
+    cover = R.drawable.gambar_2,
 ),Conversation(
     color = Color(255, 128, 128),
-    title = "Family",
-    emoji = "\uD83D\uDE80",
+    title = "Sekolah",
+    description = "Mempelajari kosa kata tentang sekolah dan aktivitas sehari-hari.",
+    cover = R.drawable.gambar_3,
 ),Conversation(
     color = Color(218, 221, 177),
-    title = "Travel",
-    emoji = "❤️",
-),Conversation(
-    color = Color(210, 224, 251),
-    title = "School",
-    emoji = "⚽",
+    title = "Pekerjaan",
+    description = "Mempelajari kosa kata tentang pekerjaan dan aktivitas sehari-hari.",
+    cover = R.drawable.family,
 ))
 

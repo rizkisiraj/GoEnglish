@@ -54,6 +54,7 @@ dependencies {
     val nav_version = "2.7.5"
 
     implementation(platform("com.google.firebase:firebase-bom:32.6.0"))
+    implementation("androidx.compose.ui:ui-util")
     implementation("com.google.firebase:firebase-firestore-ktx")
     implementation("androidx.compose.material:material-icons-extended")
     implementation("com.airbnb.android:lottie-compose:6.1.0")
@@ -79,4 +80,7 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-test-manifest")
     implementation("androidx.compose.foundation:foundation:1.2.1")
     implementation("androidx.compose.foundation:foundation-layout:1.2.1")
+    val accompanist_version = "0.15.0"
+    implementation("com.google.accompanist:accompanist-pager:$accompanist_version")
+    implementation("com.google.accompanist:accompanist-pager-indicators:$accompanist_version")
 }
