@@ -45,11 +45,28 @@ import com.example.learningapp.ui.theme.BlueVolume
 
 @Composable
 fun SuccessScreen(navController: NavController, quizViewModel: QuizViewModel) {
-    val score = (quizViewModel.getScore()/quizViewModel.getTotalQuestion())*100
+    val scoreList: Array<Int> = quizViewModel.getScore()
+    val totalQuestion: Array<Int> = quizViewModel.getTotalQuestion()
     val composition by rememberLottieComposition(spec = LottieCompositionSpec.RawRes(R.raw.success_dance))
-    var days by remember { mutableStateOf(0) }
-    val daysCounter by animateIntAsState(
-        targetValue = days,
+    var scoreListening by remember { mutableStateOf(0) }
+    var scoreReading by remember { mutableStateOf(0) }
+    var scoreSpeaking by remember { mutableStateOf(0) }
+    val listeningCounter by animateIntAsState(
+        targetValue = totalQuestion[0],
+        animationSpec = tween(
+            durationMillis = 5000,
+            easing = FastOutSlowInEasing
+        )
+    )
+    val speakingCounter by animateIntAsState(
+        targetValue = totalQuestion[1],
+        animationSpec = tween(
+            durationMillis = 5000,
+            easing = FastOutSlowInEasing
+        )
+    )
+    val readingCounter by animateIntAsState(
+        targetValue = totalQuestion[2],
         animationSpec = tween(
             durationMillis = 5000,
             easing = FastOutSlowInEasing
@@ -59,7 +76,9 @@ fun SuccessScreen(navController: NavController, quizViewModel: QuizViewModel) {
     val nMediaPlayer = MediaPlayer.create(LocalContext.current, R.raw.finished)
 
     LaunchedEffect(Unit) {
-        days = score
+        scoreListening = listeningCounter
+        scoreReading = readingCounter
+        scoreSpeaking = speakingCounter
         nMediaPlayer.start()
     }
 
@@ -97,19 +116,19 @@ fun SuccessScreen(navController: NavController, quizViewModel: QuizViewModel) {
                     modifier = Modifier
                         .fillMaxWidth()
                         .weight(1f),
-                    text = daysCounter.toString())
+                    text = "\uD83D\uDC42\uD83C\uDFFB️ ${listeningCounter}")
                 Spacer(modifier = Modifier.width(24.dp))
                 BoxCard(
                     modifier = Modifier
                         .fillMaxWidth()
                         .weight(1f),
-                    text = daysCounter.toString())
+                    text = "\uD83D\uDCD8 ${readingCounter}")
                 Spacer(modifier = Modifier.width(16.dp))
                 BoxCard(
                     modifier = Modifier
                         .fillMaxWidth()
                         .weight(1f),
-                    text = daysCounter.toString())
+                    text = "\uD83D\uDDE3️ ${speakingCounter}")
                 Spacer(modifier = Modifier.width(24.dp))
             }
             Spacer(modifier = Modifier.weight(1f))

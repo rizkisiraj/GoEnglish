@@ -5,10 +5,13 @@ import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.runtime.Composable
+import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
 import androidx.navigation.navigation
 import com.example.learningapp.data.DetailsNavScreen
 import com.example.learningapp.screen.DetailConvoScreen
@@ -185,8 +188,17 @@ fun NavGraphBuilder.quizScreen(navController: NavHostController, quizViewModel: 
             ) {
             SuccessScreen(navController = navController, quizViewModel)
         }
-        composable(route = "Loading") {
-            LoadingScreen(quizViewModel = quizViewModel, navController)
+        composable(
+            route = "Loading/{arg1}",
+            arguments = listOf(
+                navArgument("arg1") { type = NavType.StringType }
+            )
+        ) {navBackstackEntry ->
+            val args = navBackstackEntry.arguments?.getString("arg1")
+
+            args?.let {
+                LoadingScreen(quizViewModel = quizViewModel, navController, refId = args)
+            }
         }
     }
 }

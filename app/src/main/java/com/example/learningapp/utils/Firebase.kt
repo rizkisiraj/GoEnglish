@@ -11,7 +11,7 @@ class FirebaseRepositories {
     private val firestore = FirebaseFirestore.getInstance()
 
     suspend fun getQuestions(topicId: String): SnapshotStateList<Question?> {
-        val collectionPath = "topics/$topicId/questions"
+        val collectionPath = "topics/${topicId}/questions"
         var courseList = mutableStateListOf<Question?>()
 
         try {

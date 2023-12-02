@@ -154,7 +154,7 @@ fun QuizListening(quizViewModel: QuizViewModel, navController: NavController) {
                             text = "Lanjut",
                             type = "periksa"
                         ) {
-                            quizViewModel.updateScore()
+                            quizViewModel.updateScore(questionObj.type)
                             quizViewModel.OnAnswerClick()
                             var indexSekarang = quizViewModel.getIndex()
                             showBottomSheet = false
@@ -185,7 +185,21 @@ fun QuizListening(quizViewModel: QuizViewModel, navController: NavController) {
                             text = "Coba Lagi",
                             type = "gagal"
                         ) {
+                            quizViewModel.OnAnswerClick()
+                            var indexSekarang = quizViewModel.getIndex()
                             showBottomSheet = false
+
+                            if(indexSekarang < 0) {
+                                navController.navigate("Finished")
+                                return@DuolingoButton
+                            } else {
+                                var type = quizViewModel.getQuestion()?.type
+                                navController.navigate(type!!) {
+                                    popUpTo("Finished") {
+                                        inclusive = true
+                                    }
+                                }
+                            }
                         }
                     }
 

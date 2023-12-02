@@ -116,7 +116,7 @@ fun CourseCarousel(navController: NavHostController, uiViewModel: SharedViewMode
 
                         // We animate the alpha, between 50% and 100%
                         alpha = lerp(
-                            start = 0.5f,
+                            start = 0.1f,
                             stop = 1f,
                             fraction = 1f - pageOffset.coerceIn(0f, 1f)
                         )

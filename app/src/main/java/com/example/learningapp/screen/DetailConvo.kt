@@ -120,7 +120,7 @@ fun DetailConvoScreen(uiViewModel: SharedViewModel, navController: NavHostContro
                         .fillMaxWidth()
                         .padding(vertical = 16.dp, horizontal = 8.dp)
                         .clickable {
-                            navController.navigate("Loading")
+                            navController.navigate("Loading/${convo.refId}")
                         }
                 ) {
                     Text(

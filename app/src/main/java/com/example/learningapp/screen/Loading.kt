@@ -1,5 +1,6 @@
 package com.example.learningapp.screen
 
+import android.os.Debug
 import android.util.Log
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -30,15 +31,16 @@ import com.example.learningapp.utils.FirebaseRepositories
 import kotlinx.coroutines.delay
 
 @Composable
-fun LoadingScreen(quizViewModel: QuizViewModel, navController: NavController) {
+fun LoadingScreen(quizViewModel: QuizViewModel, navController: NavController, refId: String) {
     val repository = FirebaseRepositories()
     val composition by rememberLottieComposition(spec = LottieCompositionSpec.RawRes(R.raw.loading_animation))
 
     LaunchedEffect(key1 = Unit) {
         // this is a suspend function
-        var listQuestion = repository.getQuestions("aVzdekthMXdyKDsWW3Vp")
+        var listQuestion = repository.getQuestions(refId)
         quizViewModel.updateQuestionList(listQuestion)
 
+//        Log.d("anjay", "${refId} l");
         Log.d("Question", quizViewModel.getQuestion()!!.type)
 
         if(quizViewModel.getQuestion()?.type == "Reading") {

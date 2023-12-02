@@ -142,7 +142,7 @@ fun QuizReading(quizViewModel: QuizViewModel, navController: NavController) {
                             text = "Lanjut",
                             type = "periksa"
                         ) {
-                            quizViewModel.updateScore()
+                            quizViewModel.updateScore(questionObj.type)
                             quizViewModel.OnAnswerClick()
                             var indexSekarang = quizViewModel.getIndex()
                             showBottomSheet = false

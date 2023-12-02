@@ -147,7 +147,7 @@ fun QuizSpeaking(quizViewModel: QuizViewModel, navController: NavController) {
                         Text("Selamat, jawabanmu benar!", fontSize = MaterialTheme.typography.titleLarge.fontSize, fontWeight = FontWeight.SemiBold, textAlign = TextAlign.Center, color = Color.Black)
                         Spacer(modifier = Modifier.height(16.dp))
                         DuolingoButton(modifier = Modifier.fillMaxWidth(0.8f), text = "Lanjut", type = "periksa") {
-                            quizViewModel.updateScore()
+                            quizViewModel.updateScore(questionObj.type)
                             quizViewModel.OnAnswerClick()
                             var indexSekarang = quizViewModel.getIndex()
                             showBottomSheet = false
