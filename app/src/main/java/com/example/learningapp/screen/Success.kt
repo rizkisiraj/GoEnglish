@@ -52,21 +52,21 @@ fun SuccessScreen(navController: NavController, quizViewModel: QuizViewModel) {
     var scoreReading by remember { mutableStateOf(0) }
     var scoreSpeaking by remember { mutableStateOf(0) }
     val listeningCounter by animateIntAsState(
-        targetValue = totalQuestion[0],
+        targetValue = scoreListening,
         animationSpec = tween(
             durationMillis = 5000,
             easing = FastOutSlowInEasing
         )
     )
     val speakingCounter by animateIntAsState(
-        targetValue = totalQuestion[1],
+        targetValue = scoreSpeaking,
         animationSpec = tween(
             durationMillis = 5000,
             easing = FastOutSlowInEasing
         )
     )
     val readingCounter by animateIntAsState(
-        targetValue = totalQuestion[2],
+        targetValue = scoreReading,
         animationSpec = tween(
             durationMillis = 5000,
             easing = FastOutSlowInEasing
@@ -76,9 +76,9 @@ fun SuccessScreen(navController: NavController, quizViewModel: QuizViewModel) {
     val nMediaPlayer = MediaPlayer.create(LocalContext.current, R.raw.finished)
 
     LaunchedEffect(Unit) {
-        scoreListening = listeningCounter
-        scoreReading = readingCounter
-        scoreSpeaking = speakingCounter
+        scoreListening = (scoreList[0]/totalQuestion[0])*100
+        scoreReading = (scoreList[1]/totalQuestion[1])*100
+        scoreSpeaking = (scoreList[2]/totalQuestion[2])*100
         nMediaPlayer.start()
     }
 
@@ -116,7 +116,7 @@ fun SuccessScreen(navController: NavController, quizViewModel: QuizViewModel) {
                     modifier = Modifier
                         .fillMaxWidth()
                         .weight(1f),
-                    text = "\uD83D\uDC42\uD83C\uDFFB️ ${listeningCounter}")
+                    text = listeningCounter.toString())
                 Spacer(modifier = Modifier.width(24.dp))
                 BoxCard(
                     modifier = Modifier
