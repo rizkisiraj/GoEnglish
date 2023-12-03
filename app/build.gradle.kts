@@ -1,7 +1,10 @@
+
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("com.google.gms.google-services")
+    id("com.google.devtools.ksp")
 }
 
 android {
@@ -52,7 +55,13 @@ android {
 
 dependencies {
     val nav_version = "2.7.5"
+    val room_version = "2.5.2"
 
+    //Room
+    implementation("androidx.room:room-runtime:${room_version}")
+    implementation("androidx.core:core-ktx:1.10.1")
+    ksp("androidx.room:room-compiler:${room_version}")
+    implementation("androidx.room:room-ktx:${room_version}")
     implementation(platform("com.google.firebase:firebase-bom:32.6.0"))
     implementation("androidx.compose.ui:ui-util")
     implementation("com.google.firebase:firebase-firestore-ktx")
