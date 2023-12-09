@@ -11,7 +11,7 @@ interface AppContainer {
  */
 class AppDataContainer(private val context: Context) : AppContainer {
     /**
-     * Implementation for [ItemsRepository]
+     * Implementation for [ActivitiesRepository]
      */
     override val activitiesRepository: ActivitiesRepository by lazy {
         OfflineActivitiesRepository(AppDatabase.getDatabase(context).activityDao())

@@ -1,11 +1,9 @@
 package com.example.learningapp
 
-import android.app.Application
 import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.runtime.Composable
-import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -24,6 +22,8 @@ import com.example.learningapp.screen.quiz.QuizListening
 import com.example.learningapp.screen.quiz.QuizReading
 import com.example.learningapp.screen.quiz.QuizSpeaking
 import com.example.learningapp.utils.VoiceToTextParser
+import com.example.learningapp.viewmodel.QuizViewModel
+import com.example.learningapp.viewmodel.SharedViewModel
 
 @Composable
 fun BottomNavGraph(navController: NavHostController, voiceToTextParser: VoiceToTextParser) {

@@ -1,10 +1,9 @@
 package com.example.learningapp.screen
 
+import android.util.Log
 import androidx.compose.animation.animateContentSize
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -15,19 +14,16 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -38,36 +34,45 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.util.lerp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
-import com.airbnb.lottie.utils.MiscUtils.lerp
-import com.example.learningapp.R
-import com.example.learningapp.SharedViewModel
+import com.example.learningapp.data.Activity
+import com.example.learningapp.viewmodel.SharedViewModel
 import com.example.learningapp.data.Conversation
 import com.example.learningapp.data.DetailsNavScreen
 import com.example.learningapp.data.dummy
+import com.example.learningapp.viewmodel.AppViewModelProvider
+import com.example.learningapp.viewmodel.HomeUiState
+import com.example.learningapp.viewmodel.HomeViewModel
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.HorizontalPagerIndicator
 import com.google.accompanist.pager.PagerState
 import com.google.accompanist.pager.rememberPagerState
-import kotlinx.coroutines.launch
 import kotlin.math.absoluteValue
+import kotlin.math.roundToInt
 
 @Composable
-fun HomeScreen(navController: NavHostController, uiViewModel: SharedViewModel) {
+fun HomeScreen(
+    navController: NavHostController,
+    uiViewModel: SharedViewModel,
+    homeViewModel: HomeViewModel = viewModel(factory = AppViewModelProvider.Factory)
+) {
+    val homeUiState by homeViewModel.allActivites.collectAsState()
+
     Box(
         modifier = Modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background)
     ) {
-        CourseCarousel(navController, uiViewModel)
+        CourseCarousel(navController, uiViewModel, homeUiState)
     }
 }
 
@@ -78,7 +83,7 @@ var colors = listOf(
 )
 @OptIn(ExperimentalPagerApi::class)
 @Composable
-fun CourseCarousel(navController: NavHostController, uiViewModel: SharedViewModel) {
+fun CourseCarousel(navController: NavHostController, uiViewModel: SharedViewModel, homeUiState: HomeUiState) {
     val page = rememberPagerState(pageCount = 3)
     var backgroundColor by remember { mutableStateOf(colors[0][1]) }
 
@@ -122,7 +127,7 @@ fun CourseCarousel(navController: NavHostController, uiViewModel: SharedViewMode
                         )
                     }
             ) {
-                SlideContent(page = page, backgroundColor = colors[currentPage][0], cardColor = colors[currentPage][1], data = dummy[currentPage], navController, uiViewModel)
+                SlideContent(page = page, backgroundColor = colors[currentPage][0], cardColor = colors[currentPage][1], data = dummy[currentPage], navController, uiViewModel, homeUiState)
             }
         }
         HorizontalPagerIndicator(
@@ -135,9 +140,13 @@ fun CourseCarousel(navController: NavHostController, uiViewModel: SharedViewMode
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
-fun SlideContent(page: PagerState, backgroundColor: Color, cardColor: Color, data: Conversation, navController: NavHostController, uiViewModel: SharedViewModel) {
+fun SlideContent(page: PagerState, backgroundColor: Color, cardColor: Color, data: Conversation, navController: NavHostController, uiViewModel: SharedViewModel, homeUiState: HomeUiState) {
     val scope = rememberCoroutineScope()
-
+    val progress = calculateProgress(homeUiState.itemList, data.title)
+    var width by remember { mutableStateOf(0) }
+    val progressBarWidth: Int = if(calculateProgressBar(homeUiState.itemList, data.title) == 0f) 0 else (calculateProgressBar(homeUiState.itemList, data.title)*250f).toInt()
+    Log.d("coba", width.toString())
+    Log.d("coba", progressBarWidth.toString())
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
@@ -180,7 +189,7 @@ fun SlideContent(page: PagerState, backgroundColor: Color, cardColor: Color, dat
 
                 Text(
                     fontWeight = FontWeight.Light,
-                    text = "1/2 Chapter",
+                    text = progress,
                     color = Color.White,
                     fontSize = 16.sp,
                     textAlign = TextAlign.Center,
@@ -189,8 +198,8 @@ fun SlideContent(page: PagerState, backgroundColor: Color, cardColor: Color, dat
 
                 Box(
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .height(13.dp)
+                        .width(250.dp)
+                        .height(13.dp),
                 ) {
 
                     Box(
@@ -198,11 +207,14 @@ fun SlideContent(page: PagerState, backgroundColor: Color, cardColor: Color, dat
                             .fillMaxSize()
                             .clip(RoundedCornerShape(10.dp))
                             .background(Color.White)
+                            .onGloballyPositioned {
+                                width = it.size.width
+                            }
                     )
 
                     Box(
                         modifier = Modifier
-                            .width(130.dp)
+                            .width(progressBarWidth.dp)
                             .fillMaxHeight()
                             .clip(RoundedCornerShape(10.dp))
                             .background(backgroundColor)
@@ -233,7 +245,7 @@ fun SlideContent(page: PagerState, backgroundColor: Color, cardColor: Color, dat
 
                 ) {
                     Text(
-                        text = "LANJUTKAN",
+                        text = if(progressBarWidth == 0) "MULAI" else "LANJUTKAN",
                         color = Color.White,
                         fontSize = 15.sp,
                         modifier = Modifier.padding(horizontal = 8.dp)
@@ -242,5 +254,28 @@ fun SlideContent(page: PagerState, backgroundColor: Color, cardColor: Color, dat
             }
         }
 
+    }
+}
+
+fun calculateProgress(userActivities: List<Activity>, topicName: String): String {
+    val totalChapters = 3
+    val completedChapters = userActivities
+        .filter { it.name == topicName }
+        .distinctBy { it.chapter }
+        .count()
+
+    return "$completedChapters/$totalChapters Chapters"
+}
+
+fun calculateProgressBar(userActivities: List<Activity>, topicName: String): Float {
+    val totalChapters = 3f
+    val completedChapters = userActivities
+        .filter { it.name == topicName }
+        .distinctBy { it.chapter }
+        .count()
+    if(completedChapters == 0) {
+        return 0f
+    } else {
+        return (completedChapters/totalChapters)
     }
 }

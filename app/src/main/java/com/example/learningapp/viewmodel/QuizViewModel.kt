@@ -1,4 +1,4 @@
-package com.example.learningapp
+package com.example.learningapp.viewmodel
 
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import com.example.learningapp.data.Question
