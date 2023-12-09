@@ -1,8 +1,6 @@
 package com.example.learningapp.screen.quiz
 
-import android.content.res.AssetManager
 import android.media.MediaPlayer
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -41,14 +39,12 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.example.learningapp.QuizViewModel
+import com.example.learningapp.viewmodel.QuizViewModel
 import com.example.learningapp.components.DuolingoButton
 import com.example.learningapp.components.VolumeButton
 import com.example.learningapp.ui.theme.BlueShadow
 import com.example.learningapp.ui.theme.GreenBackground
 import com.example.learningapp.ui.theme.RedBackground
-import java.io.FileInputStream
-import java.io.InputStream
 
 
 @OptIn(ExperimentalMaterial3Api::class)

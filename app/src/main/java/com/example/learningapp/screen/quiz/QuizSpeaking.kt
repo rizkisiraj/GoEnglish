@@ -1,7 +1,6 @@
 package com.example.learningapp.screen.quiz
 
 import android.media.MediaPlayer
-import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
@@ -40,7 +39,7 @@ import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.rememberLottieComposition
-import com.example.learningapp.QuizViewModel
+import com.example.learningapp.viewmodel.QuizViewModel
 import com.example.learningapp.R
 import com.example.learningapp.components.BlueButton
 import com.example.learningapp.components.BoxCard

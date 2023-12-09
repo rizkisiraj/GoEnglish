@@ -34,14 +34,12 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
-import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.example.learningapp.BottomNavScreen
-import com.example.learningapp.QuizViewModel
+import com.example.learningapp.viewmodel.QuizViewModel
 import com.example.learningapp.R
 import com.example.learningapp.components.BoxCard
 import com.example.learningapp.components.DuolingoButton
-import com.example.learningapp.ui.theme.BlueVolume
 
 @Composable
 fun SuccessScreen(navController: NavController, quizViewModel: QuizViewModel) {

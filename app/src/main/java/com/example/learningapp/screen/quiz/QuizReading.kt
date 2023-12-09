@@ -1,6 +1,5 @@
 package com.example.learningapp.screen.quiz
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -36,8 +35,7 @@ import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.rememberLottieComposition
-import com.example.learningapp.BottomNavScreen
-import com.example.learningapp.QuizViewModel
+import com.example.learningapp.viewmodel.QuizViewModel
 import com.example.learningapp.components.BoxCard
 import com.example.learningapp.components.DuolingoButton
 import com.example.learningapp.R

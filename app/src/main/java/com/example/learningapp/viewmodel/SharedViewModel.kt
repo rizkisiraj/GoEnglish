@@ -1,4 +1,4 @@
-package com.example.learningapp
+package com.example.learningapp.viewmodel
 
 import com.example.learningapp.data.ConversationDetailState
 import kotlinx.coroutines.flow.MutableStateFlow
