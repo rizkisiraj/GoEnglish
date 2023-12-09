@@ -17,7 +17,7 @@ var dummy = listOf(Conversation(
     description = "Mempelajari kosa kata tentang keluarga dan aktivitas sehari-hari.",
     title = "Keluarga",
     cover = R.drawable.gambar_2,
-    refId = "9tyIMF8xZ6dLSbHQwVZg"
+    refId = "aVzdekthMXdyKDsWW3Vp"
 ),Conversation(
     color = Color(255, 128, 128),
     title = "Sekolah",

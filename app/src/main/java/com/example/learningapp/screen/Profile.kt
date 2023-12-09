@@ -11,6 +11,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -53,6 +55,7 @@ fun Analisa(){
             .padding(25.dp)
             .fillMaxSize()
             .padding(top = 65.dp)
+            .verticalScroll(rememberScrollState()),
     ) {
 
         //Ikon Kucink
@@ -122,11 +125,11 @@ fun Analisa(){
 
         //Tulisan Bawah
         Text(
-            text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris sagittis arcu tellus, sed condimentum nisi ultrices sit amet. Nunc suscipit maximus erat, quis interdum erat fermentum in. Nam finibus odio id interdum tempor. ",
+            text = "Congratulations on achieving a strong speaking score of 100! To enhance your overall English proficiency, focus on improving your listening and reading skills. Allocate dedicated time to engage with various English audio materials, such as podcasts, audiobooks, or news broadcasts, to sharpen your listening comprehension. Additionally, practice reading diverse texts to enhance your vocabulary and grasp different writing styles. Consider incorporating targeted exercises and strategies to bolster your reading score, such as skimming for main ideas and scanning for specific details. Striking a balance between these skills will not only contribute to a more well-rounded language proficiency but also boost your confidence across all aspects of English communication. Keep up the excellent work in speaking, and with consistent effort in listening and reading, you'll likely see improvements in those areas as well.",
             fontSize = 13.sp,
             textAlign = TextAlign.Justify,
             lineHeight = 25.sp,
-            modifier = Modifier.padding(top = 20.dp)
+            modifier = Modifier.padding(top = 20.dp, bottom = 65.dp)
         )
     }
 }

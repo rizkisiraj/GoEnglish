@@ -111,7 +111,7 @@ fun BoxCard(
                 .padding(14.dp),
             contentAlignment = Alignment.Center
         ) {
-            Text(text = text, fontSize = MaterialTheme.typography.bodyLarge.fontSize, textAlign = TextAlign.Center, fontWeight = FontWeight.SemiBold)
+            Text(text = text, fontSize = MaterialTheme.typography.bodyMedium.fontSize, textAlign = TextAlign.Center, fontWeight = FontWeight.SemiBold)
         }
     }
 }

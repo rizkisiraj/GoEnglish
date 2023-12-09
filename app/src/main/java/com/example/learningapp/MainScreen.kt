@@ -49,7 +49,6 @@ fun TopBar(navController: NavHostController) {
     val screens = listOf(
         BottomNavScreen.Home,
         BottomNavScreen.Analytic,
-        BottomNavScreen.Setting,
     )
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
@@ -66,7 +65,6 @@ fun BottomBar(navController: NavHostController) {
     val screens = listOf(
         BottomNavScreen.Home,
         BottomNavScreen.Analytic,
-        BottomNavScreen.Setting,
     )
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination

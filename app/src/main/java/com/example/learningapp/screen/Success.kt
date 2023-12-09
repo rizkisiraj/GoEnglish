@@ -116,7 +116,8 @@ fun SuccessScreen(navController: NavController, quizViewModel: QuizViewModel) {
                     modifier = Modifier
                         .fillMaxWidth()
                         .weight(1f),
-                    text = listeningCounter.toString())
+                    text = "\uD83D\uDC42\uD83C\uDFFB ${listeningCounter.toString()}"
+                )
                 Spacer(modifier = Modifier.width(24.dp))
                 BoxCard(
                     modifier = Modifier
