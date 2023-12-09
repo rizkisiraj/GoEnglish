@@ -1,12 +1,7 @@
 package com.example.learningapp.viewmodel
 
-import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.CreationExtras
-import androidx.room.Room
-import com.example.learningapp.LearningApplication
 import com.example.learningapp.data.ActivitiesRepository
 import com.example.learningapp.data.Activity
 import kotlinx.coroutines.flow.SharingStarted

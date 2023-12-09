@@ -15,4 +15,7 @@ data class QuizState(
     var listeningScore: Int = 0,
     var readingScore: Int = 0,
     var speakingScore: Int = 0,
+
+    var chapter: String = "",
+    var title: String = ""
 )

@@ -20,7 +20,7 @@ import com.example.learningapp.R
 import com.example.learningapp.utils.FirebaseRepositories
 
 @Composable
-fun LoadingScreen(quizViewModel: QuizViewModel, navController: NavController, refId: String) {
+fun LoadingScreen(quizViewModel: QuizViewModel, navController: NavController, refId: String, title: String, chapter: String) {
     val repository = FirebaseRepositories()
     val composition by rememberLottieComposition(spec = LottieCompositionSpec.RawRes(R.raw.loading_animation))
 
@@ -28,8 +28,8 @@ fun LoadingScreen(quizViewModel: QuizViewModel, navController: NavController, re
         // this is a suspend function
         var listQuestion = repository.getQuestions(refId)
         quizViewModel.updateQuestionList(listQuestion)
+        quizViewModel.updateCourse(title, chapter)
 
-//        Log.d("anjay", "${refId} l");
         Log.d("Question", quizViewModel.getQuestion()!!.type)
 
         if(quizViewModel.getQuestion()?.type == "Reading") {

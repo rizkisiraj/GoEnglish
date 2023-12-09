@@ -12,6 +12,10 @@ object AppViewModelProvider {
         initializer {
             HomeViewModel(learningApplication().container.activitiesRepository)
         }
+
+        initializer {
+            ResultViewModel(learningApplication().container.activitiesRepository)
+        }
         // Initializer for ItemEntryViewModel
     }
 }

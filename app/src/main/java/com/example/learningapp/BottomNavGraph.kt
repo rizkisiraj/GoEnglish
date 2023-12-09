@@ -189,15 +189,19 @@ fun NavGraphBuilder.quizScreen(navController: NavHostController, quizViewModel: 
             SuccessScreen(navController = navController, quizViewModel)
         }
         composable(
-            route = "Loading/{arg1}",
+            route = "Loading/{arg1}/{arg2}/{arg3}",
             arguments = listOf(
-                navArgument("arg1") { type = NavType.StringType }
+                navArgument("arg1") { type = NavType.StringType },
+                navArgument("arg2") { type = NavType.StringType },
+                navArgument("arg3") { type = NavType.StringType },
             )
         ) {navBackstackEntry ->
             val args = navBackstackEntry.arguments?.getString("arg1")
+            val title = navBackstackEntry.arguments?.getString("arg2")
+            val chapter = navBackstackEntry.arguments?.getString("arg3")
 
             args?.let {
-                LoadingScreen(quizViewModel = quizViewModel, navController, refId = args)
+                LoadingScreen(quizViewModel = quizViewModel, navController, refId = args, title!!, chapter!!)
             }
         }
     }

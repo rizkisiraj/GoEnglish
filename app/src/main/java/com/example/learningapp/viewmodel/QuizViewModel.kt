@@ -34,6 +34,19 @@ class QuizViewModel(voiceToTextParser: VoiceToTextParser) {
         }
     }
 
+    fun updateCourse(title: String, chapter: String) {
+        _quizState.update { uiState ->
+            uiState.copy(
+                title = title,
+                chapter = chapter
+            )
+        }
+    }
+
+    fun getCourse(): Array<String> {
+        return arrayOf(_quizState.value.title, _quizState.value.chapter)
+    }
+
     fun updateScore(type: String) {
         when(type) {
             "Listening" -> _quizState.update { uiState ->

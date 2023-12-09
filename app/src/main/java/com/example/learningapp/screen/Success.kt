@@ -23,6 +23,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -31,6 +32,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
@@ -40,10 +42,18 @@ import com.example.learningapp.viewmodel.QuizViewModel
 import com.example.learningapp.R
 import com.example.learningapp.components.BoxCard
 import com.example.learningapp.components.DuolingoButton
+import com.example.learningapp.data.Activity
+import com.example.learningapp.data.AppDataContainer
+import com.example.learningapp.viewmodel.AppViewModelProvider
+import com.example.learningapp.viewmodel.ResultViewModel
+import kotlinx.coroutines.launch
+import java.util.Date
 
 @Composable
 fun SuccessScreen(navController: NavController, quizViewModel: QuizViewModel) {
     val scoreList: Array<Int> = quizViewModel.getScore()
+    val coroutineScope = rememberCoroutineScope()
+    val resultViewModel: ResultViewModel = viewModel(factory = AppViewModelProvider.Factory)
     val totalQuestion: Array<Int> = quizViewModel.getTotalQuestion()
     val composition by rememberLottieComposition(spec = LottieCompositionSpec.RawRes(R.raw.success_dance))
     var scoreListening by remember { mutableStateOf(0) }
@@ -132,6 +142,19 @@ fun SuccessScreen(navController: NavController, quizViewModel: QuizViewModel) {
             }
             Spacer(modifier = Modifier.weight(1f))
             DuolingoButton(modifier = Modifier.fillMaxWidth(0.9f), text = "SELESAI", type = "jawaban") {
+                coroutineScope.launch {
+                    resultViewModel.saveItem(
+                        Activity(
+                            name = quizViewModel.getCourse()[0],
+                            chapter = quizViewModel.getCourse()[1],
+                            listeningScore = scoreListening,
+                            readingScore = scoreReading,
+                            speakingScore = scoreSpeaking,
+                            createdDate = Date()
+                        )
+                    )
+                }
+
                 navController.navigate(BottomNavScreen.Home.route) {
                         popUpTo("Finished") {
                             inclusive = true
