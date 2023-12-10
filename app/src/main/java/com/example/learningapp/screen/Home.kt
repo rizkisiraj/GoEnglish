@@ -145,8 +145,7 @@ fun SlideContent(page: PagerState, backgroundColor: Color, cardColor: Color, dat
     val progress = calculateProgress(homeUiState.itemList, data.title)
     var width by remember { mutableStateOf(0) }
     val progressBarWidth: Int = if(calculateProgressBar(homeUiState.itemList, data.title) == 0f) 0 else (calculateProgressBar(homeUiState.itemList, data.title)*250f).toInt()
-    Log.d("coba", width.toString())
-    Log.d("coba", progressBarWidth.toString())
+
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
