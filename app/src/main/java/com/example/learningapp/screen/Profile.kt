@@ -1,5 +1,6 @@
 package com.example.learningapp.screen
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -15,8 +16,13 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -31,6 +37,7 @@ import com.example.learningapp.R
 import com.example.learningapp.components.OutlineBox
 import com.example.learningapp.data.Activity
 import com.example.learningapp.viewmodel.AppViewModelProvider
+import com.example.learningapp.viewmodel.GPTViewModel
 import com.example.learningapp.viewmodel.HomeViewModel
 import java.util.Date
 
@@ -48,16 +55,46 @@ fun ProfileScreen() {
 
 @Composable
 fun Analisa(
-    homeViewModel: HomeViewModel = viewModel(factory = AppViewModelProvider.Factory)
+    homeViewModel: HomeViewModel = viewModel(factory = AppViewModelProvider.Factory),
+    gptViewModel: GPTViewModel = viewModel()
 ){
+
     val text1 = listOf("7+", "A+", "8")
     val homeUiState by homeViewModel.allActivites.collectAsState()
     val sortedActivities = homeUiState.itemList.sortedBy { it.createdDate }
     val userStreak = calculateStreak(sortedActivities)
     val datas: () -> List<String>  = {
-        listOf<String>(userStreak.toString(), "A+", calculateChapters(userActivities = homeUiState.itemList).toString())
+        listOf<String>(userStreak.toString(), calculateGrades(userActivities = homeUiState.itemList), calculateChapters(userActivities = homeUiState.itemList).toString())
     }
+    val myState: String = gptViewModel.myMutableState.value
+
     val dataResults = datas.invoke()
+
+    DisposableEffect(homeUiState.itemList) {
+        if (homeUiState.itemList.isNotEmpty()) {
+            val PRE_PROMPT =
+                "Supposed that you are a friendly assistant, that gives suggestions based on user English proficiency score. GIVE SIMPLE SUGGESTIONS AND FOCUS ON THE SECTION THE USER NEEDS TO IMPROVE"
+            var combinedListeningScore = ""
+            var combinedReadingScore = ""
+            var combinedSpeakingScore = ""
+
+            for ((index, activity) in homeUiState.itemList.withIndex()) {
+                if (index == homeUiState.itemList.size - 1) {
+                    combinedListeningScore += "${activity.listeningScore}"
+                    combinedReadingScore += "${activity.readingScore}"
+                    combinedSpeakingScore += "${activity.speakingScore}"
+                } else {
+                    combinedListeningScore += "${activity.listeningScore},"
+                    combinedReadingScore += "${activity.readingScore},"
+                    combinedSpeakingScore += "${activity.speakingScore},"
+                }
+            }
+
+            gptViewModel.sendMessage(PRE_PROMPT + "\n$combinedListeningScore\n$combinedReadingScore\n$combinedSpeakingScore")
+        }
+
+        onDispose {  }
+    }
 
     val text2 = listOf("Day Streak", "Grade", "Completed")
     val colors = listOf<CardColor>(
@@ -140,9 +177,10 @@ fun Analisa(
                 .background(Color.Gray)
         )
 
+
         //Tulisan Bawah
         Text(
-            text = "Congratulations on achieving a strong speaking score of 100! To enhance your overall English proficiency, focus on improving your listening and reading skills. Allocate dedicated time to engage with various English audio materials, such as podcasts, audiobooks, or news broadcasts, to sharpen your listening comprehension. Additionally, practice reading diverse texts to enhance your vocabulary and grasp different writing styles. Consider incorporating targeted exercises and strategies to bolster your reading score, such as skimming for main ideas and scanning for specific details. Striking a balance between these skills will not only contribute to a more well-rounded language proficiency but also boost your confidence across all aspects of English communication. Keep up the excellent work in speaking, and with consistent effort in listening and reading, you'll likely see improvements in those areas as well.",
+            text = gptViewModel.myMutableState.value,
             fontSize = 13.sp,
             textAlign = TextAlign.Justify,
             lineHeight = 25.sp,
@@ -176,6 +214,28 @@ fun calculateStreak(activities: List<Activity>): Int {
     }
 
     return streak
+}
+
+fun calculateGrades(userActivities: List<Activity>): String {
+    if(userActivities.isEmpty()) {
+        return "D"
+    }
+
+    var totalRate = 0
+    for(activity in userActivities) {
+        val totalScore = (activity.listeningScore + activity.speakingScore + activity.readingScore)/3
+        totalRate += totalScore
+    }
+    totalRate /= userActivities.size
+    if(totalRate >= 90) {
+        return "A"
+    } else if(totalRate >= 80) {
+        return "B"
+    } else if(totalRate >= 60) {
+        return "C"
+    } else {
+        return "D"
+    }
 }
 
 fun isConsecutiveDays(previousDate: Date, currentDate: Date): Boolean {

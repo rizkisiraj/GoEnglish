@@ -60,6 +60,8 @@ dependencies {
     val nav_version = "2.7.5"
     val room_version = "2.5.2"
 
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
     //Room
     implementation("androidx.room:room-runtime:${room_version}")
     implementation("androidx.core:core-ktx:1.10.1")
